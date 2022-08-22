@@ -56,11 +56,13 @@
             <?php 
                 require_once './model/Conexao.php';
                 $sql = "SELECT * FROM book;";
-                if (Conexao::execWithReturn($sql)) {
-                    print_r(Conexao::getData());
-                } else {
+                if (!Conexao::execWithReturn($sql)) {
                     echo Conexao::getErro();
-                }
+                    exit(1);
+                } 
+                
+                //print_r(Conexao::getData());
+                foreach (Conexao::getData() as $livro):
             ?>
             <section class="d-flex">
                 <div class="livro-imagem">
@@ -69,15 +71,21 @@
                 <div class="livro-contexto">
                     <p class="livro-dados">
                         Livro:
-                        <span id="livro-nome">Sonhos</span>
+                        <span id="livro-nome">
+                            <?= $livro['nome'] ?>
+                        </span>
                     </p>
                     <p class="livro-dados">
                         Páginas:
-                        <span id="livro-paginas">168</span>
+                        <span id="livro-paginas">
+                            <?= $livro['paginas'] ?>
+                        </span>
                     </p>
                     <p class="livro-dados">
                         Autor/a/as/es:
-                        <span id="livro-autores">Desconhecido</span>
+                        <span id="livro-autores">
+                        <?= $livro['autor'] ?>
+                        </span>
                     </p>
                 </div>
                 <div class="livro-marcos">
@@ -99,6 +107,9 @@
                     </div>
                 </div>
             </section>
+            <?php 
+                endforeach; 
+            ?>
         </div>
     </main>
 </body>
